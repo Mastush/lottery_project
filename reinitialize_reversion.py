@@ -1,6 +1,6 @@
 import numpy as np
 from abc import ABC, abstractmethod
-from ranking import diff_ranking_over, vector_diff_ranking_over, vector_diff_ranking_under
+from ranking import *
 import keras.backend as K
 import utils
 
@@ -26,19 +26,20 @@ class DiffModelReinitializer(ModelReinitializer):
     def reinitialize(self, percentage=None):
         if percentage is None:
             percentage = self._percentage
-        layer_masks, reinitialized_layers = self._reinitializer.apply_to_model(self._model,
-                                                                               self._reference_weights, percentage)
-        self._update_reference_weights(layer_masks, reinitialized_layers)
+        self._reinitializer.apply_to_model(self._model, self._reference_weights, percentage)
+        self._reference_weights = utils.get_model_weights(self._model)
 
-    def _update_reference_weights(self, layer_masks, reinitialized_layers):
-        for i in range(len(self._reference_weights)):
-            layer_weights = self._reference_weights[i]
-            relevant_mask = layer_masks[i]
-            relevant_reinitialized = reinitialized_layers[i]
-            if layer_weights is not None:
-                layer_weights[0][relevant_mask[0]] = relevant_reinitialized[0][relevant_mask[0]]
-                layer_weights[1][relevant_mask[1]] = relevant_reinitialized[1][relevant_mask[1]]
 
+class MagnitudeModelReinitializer(ModelReinitializer):  # TODO: implement and try
+    def __init__(self, model, reinitializer, mask=None, percentage=None):
+        super().__init__(model, reinitializer, mask, percentage)
+        self._reference_weights = utils.get_model_weights(self._model)
+
+    def reinitialize(self, percentage=None):
+        if percentage is None:
+            percentage = self._percentage
+        self._reinitializer.apply_to_model(self._model, self._reference_weights, percentage)
+        self._reference_weights = utils.get_model_weights(self._model)
 
 
 class Reinitializer(ABC):
@@ -62,15 +63,16 @@ class DiffReinitializer(Reinitializer):
         super().__init__(vector_diff_ranking_under, kernel_initializer, bias_initializer)
 
     def apply_to_model(self, model, reference_weights, percentage):
-        initial_weights_vector = utils.weights_to_vector(reference_weights)
+        reference_weights_vector = utils.weights_to_vector(reference_weights)
         current_weights_vector = utils.weights_to_vector(utils.get_model_weights(model))
-        diff_vector = np.abs(initial_weights_vector - current_weights_vector)
+        diff_vector = np.abs(reference_weights_vector - current_weights_vector)
         mask_vector = self._ranker(diff_vector, percentage)
 
         last_idx = 0
         layer_masks = []
         reinitialized_layers = []
-        for layer in model.layers:
+        for i in range(len(model.layers)):
+            layer = model.layers[i]
             if len(layer.get_weights()) > 0:
                 kernel, bias = layer.get_weights()[0], layer.get_weights()[1]
                 kernel_mask = mask_vector[last_idx:last_idx + kernel.size].reshape(kernel.shape)
@@ -81,8 +83,8 @@ class DiffReinitializer(Reinitializer):
                 kernel_reinitialized = self._kernel_initializer(kernel.shape)
                 bias_reinitialized = self._bias_initializer(bias.shape)
 
-                new_kernel = np.copy(kernel)
-                new_bias = np.copy(bias)
+                new_kernel = np.copy(reference_weights[i][0])
+                new_bias = np.copy(reference_weights[i][1])
 
                 new_kernel[kernel_mask] = kernel_reinitialized[kernel_mask]
                 new_bias[bias_mask] = bias_reinitialized[bias_mask]
@@ -94,7 +96,44 @@ class DiffReinitializer(Reinitializer):
             else:
                 layer_masks.append(None)
                 reinitialized_layers.append(None)
-        return layer_masks, reinitialized_layers
+
+
+class MagnitudeReinitializer(Reinitializer):
+    def __init__(self, kernel_initializer, bias_initializer):
+        super().__init__(magnitude_ranking, kernel_initializer, bias_initializer)
+
+    def apply_to_model(self, model, reference_weights, percentage):
+        weights_vector = utils.weights_to_vector(utils.get_model_weights(model))
+        mask_vector = self._ranker(weights_vector, percentage)
+
+        last_idx = 0
+        layer_masks = []
+        reinitialized_layers = []
+        for i in range(len(model.layers)):
+            layer = model.layers[i]
+            if len(layer.get_weights()) > 0:
+                kernel, bias = layer.get_weights()[0], layer.get_weights()[1]
+                kernel_mask = mask_vector[last_idx:last_idx + kernel.size].reshape(kernel.shape)
+                last_idx += kernel.size
+                bias_mask = mask_vector[last_idx:last_idx + bias.size].reshape(bias.shape)
+                last_idx += bias.size
+
+                kernel_reinitialized = self._kernel_initializer(kernel.shape)
+                bias_reinitialized = self._bias_initializer(bias.shape)
+
+                new_kernel = np.copy(reference_weights[i][0])
+                new_bias = np.copy(reference_weights[i][1])
+
+                new_kernel[kernel_mask] = kernel_reinitialized[kernel_mask]
+                new_bias[bias_mask] = bias_reinitialized[bias_mask]
+
+                layer.set_weights((new_kernel, new_bias))
+
+                layer_masks.append([kernel_mask, bias_mask])
+                reinitialized_layers.append([kernel_reinitialized, bias_reinitialized])
+            else:
+                layer_masks.append(None)
+                reinitialized_layers.append(None)
 
 
 class LayerReinitializer(ABC):

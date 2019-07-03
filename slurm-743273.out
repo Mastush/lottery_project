@@ -1,0 +1,141 @@
+2019-07-03 14:56:48.159905: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX512F
+2019-07-03 14:56:48.614153: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1405] Found device 0 with properties: 
+name: GeForce RTX 2080 Ti major: 7 minor: 5 memoryClockRate(GHz): 1.545
+pciBusID: 0000:af:00.0
+totalMemory: 10.73GiB freeMemory: 10.53GiB
+2019-07-03 14:56:48.614197: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1484] Adding visible gpu devices: 0
+2019-07-03 14:56:49.152665: I tensorflow/core/common_runtime/gpu/gpu_device.cc:965] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-03 14:56:49.152727: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971]      0 
+2019-07-03 14:56:49.152739: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] 0:   N 
+2019-07-03 14:56:49.153047: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1097] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10168 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:af:00.0, compute capability: 7.5)
+x_train shape: (50000, 32, 32, 3)
+50000 train samples
+5000 validation samples
+5000 test samples
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         (None, 32, 32, 3)         0         
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 30, 30, 8)         224       
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 28, 28, 8)         584       
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 26, 26, 8)         584       
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 24, 24, 8)         584       
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 22, 22, 8)         584       
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 3872)              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 16)                61968     
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                170       
+=================================================================
+Total params: 64,698
+Trainable params: 64,698
+Non-trainable params: 0
+_________________________________________________________________
+Starting final fitting
+Epoch 1/50
+ - 36s - loss: 2.3757 - categorical_accuracy: 0.1036 - val_loss: 2.3091 - val_categorical_accuracy: 0.1180
+Epoch 2/50
+ - 23s - loss: 2.3049 - categorical_accuracy: 0.1162 - val_loss: 2.3030 - val_categorical_accuracy: 0.1218
+Epoch 3/50
+ - 23s - loss: 2.3024 - categorical_accuracy: 0.1173 - val_loss: 2.2994 - val_categorical_accuracy: 0.1220
+Epoch 4/50
+ - 23s - loss: 2.2991 - categorical_accuracy: 0.1120 - val_loss: 2.2945 - val_categorical_accuracy: 0.1184
+Epoch 5/50
+ - 23s - loss: 2.2933 - categorical_accuracy: 0.1167 - val_loss: 2.2816 - val_categorical_accuracy: 0.1324
+Epoch 6/50
+ - 23s - loss: 2.2724 - categorical_accuracy: 0.1304 - val_loss: 2.2468 - val_categorical_accuracy: 0.1436
+Epoch 7/50
+ - 23s - loss: 2.2467 - categorical_accuracy: 0.1399 - val_loss: 2.2178 - val_categorical_accuracy: 0.1544
+Epoch 8/50
+ - 23s - loss: 2.2198 - categorical_accuracy: 0.1464 - val_loss: 2.1882 - val_categorical_accuracy: 0.1630
+Epoch 9/50
+ - 23s - loss: 2.1991 - categorical_accuracy: 0.1590 - val_loss: 2.1771 - val_categorical_accuracy: 0.1700
+Epoch 10/50
+ - 23s - loss: 2.1808 - categorical_accuracy: 0.1678 - val_loss: 2.1450 - val_categorical_accuracy: 0.1864
+Epoch 11/50
+ - 23s - loss: 2.1670 - categorical_accuracy: 0.1748 - val_loss: 2.1412 - val_categorical_accuracy: 0.1878
+Epoch 12/50
+ - 23s - loss: 2.1556 - categorical_accuracy: 0.1810 - val_loss: 2.1206 - val_categorical_accuracy: 0.2016
+Epoch 13/50
+ - 23s - loss: 2.1431 - categorical_accuracy: 0.1863 - val_loss: 2.1088 - val_categorical_accuracy: 0.2036
+Epoch 14/50
+ - 23s - loss: 2.1362 - categorical_accuracy: 0.1877 - val_loss: 2.1022 - val_categorical_accuracy: 0.2038
+Epoch 15/50
+ - 23s - loss: 2.1281 - categorical_accuracy: 0.1959 - val_loss: 2.0914 - val_categorical_accuracy: 0.2084
+Epoch 16/50
+ - 23s - loss: 2.1210 - categorical_accuracy: 0.2006 - val_loss: 2.0872 - val_categorical_accuracy: 0.2094
+Epoch 17/50
+ - 23s - loss: 2.1131 - categorical_accuracy: 0.2049 - val_loss: 2.0978 - val_categorical_accuracy: 0.2106
+Epoch 18/50
+ - 24s - loss: 2.1085 - categorical_accuracy: 0.2014 - val_loss: 2.0781 - val_categorical_accuracy: 0.2196
+Epoch 19/50
+ - 23s - loss: 2.1012 - categorical_accuracy: 0.2088 - val_loss: 2.0665 - val_categorical_accuracy: 0.2222
+Epoch 20/50
+ - 23s - loss: 2.0962 - categorical_accuracy: 0.2258 - val_loss: 2.0668 - val_categorical_accuracy: 0.2426
+Epoch 21/50
+ - 23s - loss: 2.0903 - categorical_accuracy: 0.2327 - val_loss: 2.0562 - val_categorical_accuracy: 0.2480
+Epoch 22/50
+ - 23s - loss: 2.0841 - categorical_accuracy: 0.2376 - val_loss: 2.0712 - val_categorical_accuracy: 0.2448
+Epoch 23/50
+ - 23s - loss: 2.0771 - categorical_accuracy: 0.2432 - val_loss: 2.0438 - val_categorical_accuracy: 0.2574
+Epoch 24/50
+ - 23s - loss: 2.0680 - categorical_accuracy: 0.2449 - val_loss: 2.0513 - val_categorical_accuracy: 0.2420
+Epoch 25/50
+ - 23s - loss: 2.0640 - categorical_accuracy: 0.2384 - val_loss: 2.0351 - val_categorical_accuracy: 0.2462
+Epoch 26/50
+ - 23s - loss: 2.0540 - categorical_accuracy: 0.2455 - val_loss: 2.0190 - val_categorical_accuracy: 0.2514
+Epoch 27/50
+ - 23s - loss: 2.0433 - categorical_accuracy: 0.2448 - val_loss: 2.0065 - val_categorical_accuracy: 0.2594
+Epoch 28/50
+ - 23s - loss: 2.0308 - categorical_accuracy: 0.2470 - val_loss: 1.9915 - val_categorical_accuracy: 0.2604
+Epoch 29/50
+ - 23s - loss: 2.0153 - categorical_accuracy: 0.2491 - val_loss: 1.9956 - val_categorical_accuracy: 0.2620
+Epoch 30/50
+ - 23s - loss: 2.0034 - categorical_accuracy: 0.2483 - val_loss: 1.9611 - val_categorical_accuracy: 0.2658
+Epoch 31/50
+ - 23s - loss: 1.9870 - categorical_accuracy: 0.2521 - val_loss: 1.9477 - val_categorical_accuracy: 0.2644
+Epoch 32/50
+ - 23s - loss: 1.9781 - categorical_accuracy: 0.2512 - val_loss: 1.9362 - val_categorical_accuracy: 0.2686
+Epoch 33/50
+ - 23s - loss: 1.9671 - categorical_accuracy: 0.2546 - val_loss: 1.9254 - val_categorical_accuracy: 0.2708
+Epoch 34/50
+ - 23s - loss: 1.9584 - categorical_accuracy: 0.2540 - val_loss: 1.9104 - val_categorical_accuracy: 0.2746
+Epoch 35/50
+ - 23s - loss: 1.9478 - categorical_accuracy: 0.2555 - val_loss: 1.9075 - val_categorical_accuracy: 0.2808
+Epoch 36/50
+ - 23s - loss: 1.9408 - categorical_accuracy: 0.2561 - val_loss: 1.9283 - val_categorical_accuracy: 0.2780
+Epoch 37/50
+ - 23s - loss: 1.9311 - categorical_accuracy: 0.2622 - val_loss: 1.8904 - val_categorical_accuracy: 0.2782
+Epoch 38/50
+ - 23s - loss: 1.9217 - categorical_accuracy: 0.2682 - val_loss: 1.8766 - val_categorical_accuracy: 0.2910
+Epoch 39/50
+ - 23s - loss: 1.9122 - categorical_accuracy: 0.2733 - val_loss: 1.8657 - val_categorical_accuracy: 0.2952
+Epoch 40/50
+ - 23s - loss: 1.9008 - categorical_accuracy: 0.2772 - val_loss: 1.8531 - val_categorical_accuracy: 0.2982
+Epoch 41/50
+ - 23s - loss: 1.8897 - categorical_accuracy: 0.2821 - val_loss: 1.8739 - val_categorical_accuracy: 0.3000
+Epoch 42/50
+ - 23s - loss: 1.8789 - categorical_accuracy: 0.2907 - val_loss: 1.8269 - val_categorical_accuracy: 0.3130
+Epoch 43/50
+ - 23s - loss: 1.8660 - categorical_accuracy: 0.2970 - val_loss: 1.8209 - val_categorical_accuracy: 0.3162
+Epoch 44/50
+ - 23s - loss: 1.8576 - categorical_accuracy: 0.3036 - val_loss: 1.8445 - val_categorical_accuracy: 0.3184
+Epoch 45/50
+ - 23s - loss: 1.8485 - categorical_accuracy: 0.3076 - val_loss: 1.8006 - val_categorical_accuracy: 0.3294
+Epoch 46/50
+ - 23s - loss: 1.8371 - categorical_accuracy: 0.3102 - val_loss: 1.7866 - val_categorical_accuracy: 0.3312
+Epoch 47/50
+ - 23s - loss: 1.8233 - categorical_accuracy: 0.3160 - val_loss: 1.7750 - val_categorical_accuracy: 0.3396
+Epoch 48/50
+ - 23s - loss: 1.8166 - categorical_accuracy: 0.3200 - val_loss: 1.7625 - val_categorical_accuracy: 0.3410
+Epoch 49/50
+ - 23s - loss: 1.8126 - categorical_accuracy: 0.3215 - val_loss: 1.7716 - val_categorical_accuracy: 0.3408
+Epoch 50/50
+ - 23s - loss: 1.8029 - categorical_accuracy: 0.3248 - val_loss: 1.7530 - val_categorical_accuracy: 0.3468
+Using TensorFlow backend.
