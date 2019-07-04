@@ -59,8 +59,8 @@ class Reinitializer(ABC):
 
 
 class DiffReinitializer(Reinitializer):
-    def __init__(self, kernel_initializer, bias_initializer):
-        super().__init__(vector_diff_ranking_under, kernel_initializer, bias_initializer)
+    def __init__(self, ranker, kernel_initializer, bias_initializer):
+        super().__init__(ranker, kernel_initializer, bias_initializer)
 
     def apply_to_model(self, model, reference_weights, percentage):
         reference_weights_vector = utils.weights_to_vector(reference_weights)
@@ -99,8 +99,8 @@ class DiffReinitializer(Reinitializer):
 
 
 class MagnitudeReinitializer(Reinitializer):
-    def __init__(self, kernel_initializer, bias_initializer):
-        super().__init__(magnitude_ranking, kernel_initializer, bias_initializer)
+    def __init__(self, kernel_initializer, bias_initializer, ranker=magnitude_ranking):
+        super().__init__(ranker, kernel_initializer, bias_initializer)
 
     def apply_to_model(self, model, reference_weights, percentage):
         weights_vector = utils.weights_to_vector(utils.get_model_weights(model))
