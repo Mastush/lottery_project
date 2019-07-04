@@ -17,6 +17,7 @@ BATCH_SIZE = 32
 THRESHOLD = 0.1
 EPOCHS = 100
 ITERATION_EPOCHS = 20
+RANKER = vector_diff_ranking_over
 
 
 def cifar_experiment():
@@ -45,11 +46,10 @@ def cifar_experiment():
     model.summary()
 
 
-    ranker = magnitude_ranking
-    weight_reinitializer = MagnitudeReinitializer(KerasKernelInitializerWrapper(glorot_normal), ZeroBiasInitializer(), ranker=ranker)
-    model_reinitializer = MagnitudeModelReinitializer(model, weight_reinitializer)
-    # weight_reinitializer = DiffReinitializer(ranker, KerasKernelInitializerWrapper(glorot_normal), ZeroBiasInitializer())
-    # model_reinitializer = DiffModelReinitializer(model, weight_reinitializer)
+    # weight_reinitializer = MagnitudeReinitializer(KerasKernelInitializerWrapper(glorot_normal), ZeroBiasInitializer(), ranker=RANKER)
+    # model_reinitializer = MagnitudeModelReinitializer(model, weight_reinitializer)
+    weight_reinitializer = DiffReinitializer(RANKER, KerasKernelInitializerWrapper(glorot_normal), ZeroBiasInitializer())
+    model_reinitializer = DiffModelReinitializer(model, weight_reinitializer)
 
     percentage = 0.8
     # find good init
@@ -89,7 +89,7 @@ def cifar_experiment():
                         validation_data=(x_val, y_val), verbose=2)
 
 if __name__ == '__main__':
-    print("---------- Using {}, {} epochs per iteration ----------".format(ranker, ITERATION_EPOCHS))
+    print("---------- Using {}, {} epochs per iteration ----------".format(RANKER, ITERATION_EPOCHS))
     print("Experiment start: {}".format(datetime.datetime.now()))
     cifar_experiment()
     print("Experiment end: {}".format(datetime.datetime.now()))
